@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, watch, watchEffect } from 'vue'
 
 // 현재 내 위치 기반 날씨 데이터 제공
 const mylocateweather = [
@@ -18,10 +18,31 @@ const citylist = ref([
 const searchQuery = ref('')
 const selectedCityInfo = ref('카드를 클릭하거나 검색해 보세요.')
 
+// 실시간 검색 필터링
+const filteredcities = computed(() => {
+  // 검색어 공백 제거
+  const query = searchQuery.value.trim()
+  if (!query) {
+    return citylist.value
+  }
+  // 검색어가 포함된 도시만 필터링
+  return citylist.value.filter((city) => city.name.includes(query))
+})
+
+watch(searchQuery, (newQuery) => {
+  console.log(`검색어가 업데이트되었습니다: '${newQuery}'`)
+})
+
+// watchEffect를 사용한 자동 의존성 API 로그 시뮬, 타이핑 시 변하는 searchQuery를 자동 감지하여 filteredcities를 콘솔에 출력
+watchEffect(() => {
+  console.log(`검색어: '${searchQuery.value}'에 매칭되는 API 데이터를 필터링합니다.`)
+})
+
 // 알림 대행 함수
 const showDetail = (cityName, temp, status, humid, pop, ws) => {
   window.alert(
-    `${cityName}의 현재 날씨는 섭씨 ${temp}°C, ${status}, 습도 ${humid}%, 강수 확률 ${pop}%, 풍속 ${ws}m/s 입니다.`,
+    `${cityName}의 현재 날씨는
+섭씨 ${temp}°C, ${status}, 습도 ${humid}%, 강수 확률 ${pop}%, 풍속 ${ws}m/s 입니다.`,
   )
 }
 </script>
@@ -37,12 +58,12 @@ const showDetail = (cityName, temp, status, humid, pop, ws) => {
         placeholder="도시명 입력"
       />
       <p>
-        검색 중인 도시: <strong>{{ searchQuery }}</strong>
+        검색 중인 도시: <strong>{{ searchQuery || '전체' }}</strong>
       </p>
     </section>
 
     <section class="myweather">
-      <h3>현재 나의 도시 날씨 현황</h3>
+      <h3>현재 나의 도시 현황</h3>
       <div
         v-for="mywe in mylocateweather"
         :key="mywe.id"
@@ -64,9 +85,9 @@ const showDetail = (cityName, temp, status, humid, pop, ws) => {
       </div>
     </section>
 
-    <section class="2x2list">
+    <section class="regionallist">
       <div
-        v-for="we in citylist"
+        v-for="we in filteredcities"
         :key="we.id"
         class="weather-box"
         @click="selectedCityInfo = `${we.name}이 선택되었습니다.`"
@@ -84,6 +105,9 @@ const showDetail = (cityName, temp, status, humid, pop, ws) => {
           상세 보기
         </button>
       </div>
+      <p v-if="filteredcities.length === 0" style="text-align: center" padding="10px 0">
+        검색 결과에 해당하는 도시가 없습니다.
+      </p>
     </section>
 
     <!--수정 할 것-->
