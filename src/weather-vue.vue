@@ -105,7 +105,7 @@ const showDetail = (cityName, temp, status, humid, pop, ws) => {
           상세 보기
         </button>
       </div>
-      <p v-if="filteredcities.length === 0" style="text-align: center" padding="10px 0">
+      <p v-if="filteredcities.length === 0" style="text-align: center; padding: 10px 0">
         검색 결과에 해당하는 도시가 없습니다.
       </p>
     </section>
