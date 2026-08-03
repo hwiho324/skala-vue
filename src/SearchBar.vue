@@ -8,6 +8,7 @@ defineProps({ currentQuery: { type: String, default: '' } })
     <input
       type="text"
       :value="currentQuery"
+      autocomplete="off"
       @input="$emit('update-query', $event.target.value)"
       placeholder="도시명 입력"
     />

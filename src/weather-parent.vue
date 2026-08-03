@@ -11,6 +11,8 @@ const myLocateWeather = [
 ]
 
 // API 연동 현재 날씨 표기
+// 북쪽에서 남쪽, 각 행에서는 서쪽 도시 우선
+// 고정 2열 안에서 국내 도시의 상대 위치 자연스럽게
 const cityList = ref([
   { id: 'city_01', name: '서울', temp: 32, status: '맑음', humid: 82, pop: 0, ws: 4 },
   { id: 'city_02', name: '화성', temp: 24, status: '비', humid: 91, pop: 80, ws: 6 },
@@ -42,7 +44,7 @@ watchEffect(() => {
   console.log(`검색어: '${searchQuery.value}'에 매칭되는 API 데이터를 필터링합니다.`)
 })
 
-// 알림 대행 함수
+// WeatherCard가 보내는 기존 여섯 인자
 const showDetail = (cityName, temp, status, humid, pop, ws) => {
   window.alert(
     `${cityName}의 현재 날씨는
@@ -54,6 +56,12 @@ const showDetail = (cityName, temp, status, humid, pop, ws) => {
 <template>
   <!-- 도시 검색 -->
   <div class="search_container">
+    <header class="page-header">
+      <p>SKY WEATHER</p>
+      <h1>전국 날씨</h1>
+      <span>주요 도시의 현재 하늘을 확인</span>
+    </header>
+
     <BaseDashboardCard>
       <SearchBar
         :current-query="searchQuery"
@@ -63,32 +71,40 @@ const showDetail = (cityName, temp, status, humid, pop, ws) => {
 
     <BaseDashboardCard>
       <h3>현재 나의 도시 현황</h3>
-
-      <WeatherCard
-        v-for="myWea in myLocateWeather"
-        :key="myWea.id"
-        :city-wea="myWea"
-        @select-card="(msg) => (selectedCityInfo = msg)"
-        @click-detail="showDetail"
-      />
+      <div class="my-weather-grid">
+        <WeatherCard
+          v-for="myWea in myLocateWeather"
+          :key="myWea.id"
+          :city-wea="myWea"
+          @select-card="(msg) => (selectedCityInfo = msg)"
+          @click-detail="showDetail"
+        />
+      </div>
     </BaseDashboardCard>
 
     <BaseDashboardCard>
-      <h3>지역별 날씨 현황</h3>
-      <WeatherCard
-        v-for="wea in filteredCities"
-        :key="wea.id"
-        :city-wea="wea"
-        @select-card="(msg) => (selectedCityInfo = msg)"
-        @click-detail="showDetail"
-      />
+      <div class="section-heading">
+        <h3>지역별 날씨 현황</h3>
+        <span>{{ filteredCities.length }}개 도시</span>
+      </div>
 
-      <p v-if="filteredCities.length === 0" style="text-align: center; padding: 10px 0">
+      <div class="weather-gird">
+        <WeatherCard
+          v-for="wea in filteredCities"
+          :key="wea.id"
+          :city-wea="wea"
+          @select-card="(msg) => (selectedCityInfo = msg)"
+          @click-detail="showDetail"
+        />
+      </div>
+
+      <p v-if="filteredCities.length === 0" class="no-results">
         검색 결과에 해당하는 도시가 없습니다.
       </p>
     </BaseDashboardCard>
 
-    <div class="status-bar">
+    <div class="status-bar" aria-live="polite" aria-atomic="true">
+      <span aria-hidden="true">●</span>
       {{ selectedCityInfo }}
     </div>
   </div>
@@ -98,7 +114,7 @@ const showDetail = (cityName, temp, status, humid, pop, ws) => {
 .search_container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 20px;
+  gap: 10px;
+  padding: 50px;
 }
 </style>

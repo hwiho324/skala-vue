@@ -21,6 +21,19 @@ const withJosa = (word) => {
 const selectCard = () => {
   emit('select-card', `${withJosa(props.cityWea.name)} 선택했습니다.`)
 }
+
+// 상세 보기 클릭
+const showDetail = () => {
+  emit(
+    'click-detail',
+    props.cityWea.name,
+    props.cityWea.temp,
+    props.cityWea.status,
+    props.cityWea.humid,
+    props.cityWea.pop,
+    props.cityWea.ws,
+  )
+}
 </script>
 
 <template>
@@ -30,21 +43,6 @@ const selectCard = () => {
 
     <span v-if="cityWea.temp >= 25" class="hotline">더움 (25°C 이상)</span>
     <span v-else class="cool line">시원 (25°C 미만) </span>
-    <button
-      class="wea-detail"
-      @click.stop="
-        emit(
-          'click-detail',
-          cityWea.name,
-          cityWea.temp,
-          cityWea.status,
-          cityWea.humid,
-          cityWea.pop,
-          cityWea.ws,
-        )
-      "
-    >
-      상세 보기
-    </button>
+    <button class="wea-detail" @click.stop="showDetail">상세 보기</button>
   </div>
 </template>
