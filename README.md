@@ -1,50 +1,82 @@
-# skala-vue
+# Sky Weather
 
-<<<<<<< HEAD
-practice for vue in skala
-=======
+실시간 날씨와 시간별 예보를 확인할 수 있는 Vue 기반 날씨 대시보드입니다.
 
-This template should help get you started developing with Vue 3 in Vite.
+주요 도시와 현재 위치의 날씨를 글라스 UI로 제공하며 검색, 즐겨찾기, 단위 변환, 다크모드를 지원합니다.
 
-## Recommended IDE Setup
+## 배포 주소
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+[Sky Weather 바로가기](https://weather-yaho.vercel.app/#/)
 
-## Recommended Browser Setup
+## 구현 기능
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+- OpenWeather API를 이용한 주요 도시 실시간 날씨 조회
+- 브라우저 위치 정보를 이용한 현재 위치 날씨 조회
+- 현재 기온, 최고·최저 기온, 체감온도, 습도, 풍속 표시
+- 시간별 예상 기온과 날씨 아이콘을 막대그래프로 표시
+- 강수확률, 일출·일몰 시간, 마지막 갱신 시각 표시
+- 도시 검색창 확장 애니메이션과 자동완성
+- 검색어를 URL Query와 동기화
+- 도시 카드 위치에서 확대되는 상세 모달
+- Vue Router를 이용한 도시별 상세 주소와 404 처리
+- Pinia와 `localStorage`를 이용한 즐겨찾기 관리
+- 섭씨·화씨 단위 변환
+- 라이트모드와 다크모드
+- 날씨 상태에 따른 배경과 비·물방울 효과
+- Element Plus Skeleton을 이용한 로딩 화면
+- 개별 도시 API 오류 처리
+- 모바일·데스크톱 반응형 화면
+- Vercel 자동 배포
 
-## Customize configuration
+## 사용 기술
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- Vue 3 Composition API
+- Vite
+- Vue Router
+- Pinia
+- Axios
+- Element Plus
+- Font Awesome
+- OpenWeather API
+- Geolocation API
 
-## Project Setup
+## 4일간 어려웠던 점과 해결 과정
 
-```sh
-npm install
-```
+### 1일 차: 컴포넌트 통신과 라우팅
 
-### Compile and Hot-Reload for Development
+초기에는 컴포넌트마다 `props`와 `emit` 이벤트 이름이 달라 UnitToggle과 상세보기가 정상적으로 동작하지 않았습니다.
 
-```sh
-npm run dev
-```
+`WeatherCard`, `SearchBar`, 부모 View 사이의 데이터 이름을 통일하고 `router.push()` 경로와 `route.params.city`를 라우터 설정에 맞춰 해결했습니다.
 
-### Compile and Minify for Production
+### 2일 차: 실제 API와 전역 상태 관리
 
-```sh
-npm run build
-```
+여러 도시의 날씨를 가져올 때 한 도시의 요청이 실패하면 전체 화면에 영향을 주는 문제가 있었습니다.
 
-### Lint with [ESLint](https://eslint.org/)
+도시별 오류를 각각 처리하고 실패한 도시는 오류 정보를 가진 객체로 반환하도록 변경했습니다. 이를 통해 일부 요청이 실패해도 정상적으로 응답한 도시는 계속 표시할 수 있었습니다.
 
-```sh
-npm run lint
-```
+날씨와 즐겨찾기 데이터는 Pinia Store로 분리하여 홈과 상세 모달이 동일한 데이터를 공유하도록 구성했습니다.
 
-> > > > > > > 3dd230b (main)
+### 3일 차: 검색과 상세 모달 리팩터링
+
+날씨 효과와 상세 기능이 추가되면서 View의 script와 CSS가 지나치게 길어졌습니다.
+
+날씨 테마, 상세 데이터 계산, 확대 전환 기능을 composable과 별도 CSS 파일로 분리했습니다.
+
+검색어는 Vue Router Query와 동기화하고 상세 모달은 `/weather/:city` 주소와 연결하여 새로고침과 브라우저 뒤로가기도 동작하도록 개선했습니다.
+
+### 4일 차: 글라스 투명도와 배포
+
+개발 중에는 자연스러웠던 글라스가 새로고침과 배포 후 지나치게 투명하게 보여 뒤쪽 도시명과 온도가 겹쳐 보이는 문제가 있었습니다.
+
+원인은 일반 대시보드, sticky 헤더, 즐겨찾기, 상세 모달이 비슷한 투명도 값을 공유하고 있었기 때문입니다.
+
+다음과 같이 글라스의 용도를 분리하여 해결했습니다.
+
+- 일반 대시보드용 글라스
+- 스크롤 위에 떠 있는 헤더·즐겨찾기용 글라스
+- 뒤쪽 내용을 차단하는 상세 모달용 글라스
+- 라이트모드와 다크모드의 개별 불투명도
+
+또한 모달 확대 애니메이션의 `opacity`를 조정하여 모달이 열리고 닫히는 순간에도 뒤 카드가 훤히 보이지 않도록 수정했습니다.
+
+배포 과정에서는 GitHub Pages의 `base` 경로와 Actions 파일 위치 문제를 확인했습니다. 최종적으로 Vercel에 GitHub 저장소를 연결하고 환경변수를 등록하여 `main` 브랜치에 push할 때 자동으로 배포되도록 구성했습니다.
