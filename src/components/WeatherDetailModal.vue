@@ -1,7 +1,7 @@
 <script setup>
 import { toRef } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faDatabase } from '@fortawesome/free-solid-svg-icons'
+import { faDatabase, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 import { useConfigStore } from '../stores/configStore'
 import { useWeatherDetail } from '../composables/useWeatherDetail'
@@ -53,7 +53,7 @@ const closeModal = () => {
       aria-label="상세보기 닫기"
       @click="closeModal"
     >
-      ×
+      <FontAwesomeIcon :icon="faXmark" aria-hidden="true" />
     </button>
 
     <div v-if="city.hasError" class="weather-detail-modal__error">

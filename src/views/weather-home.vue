@@ -2,6 +2,7 @@
 import { ref, computed, watch, watchEffect, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
+import { ElSkeleton, ElSkeletonItem } from 'element-plus'
 
 import { useWeatherStore } from '../stores/weatherStore.js'
 import { useDetailTransition } from '../composables/useDetailTransition'
@@ -29,17 +30,33 @@ const { cityList, myLocateWeather, isLoading, errorMessage, isMyLocationLoading,
 const { fetchRealTimeWeather, fetchMyLocationWeather } = weatherStore
 
 onMounted(() => {
-  if (typeof route.query.search === 'string') {
-    searchQuery.value = route.query.search
-  }
   fetchRealTimeWeather()
   fetchMyLocationWeather()
 })
 
-// 검색어 및 알림창 데이터
+// 검색어 입력
 const searchQuery = ref('')
+
+watch(
+  () => route.query.search,
+  (newSearch) => {
+    const nextQuery = typeof newSearch === 'string' ? newSearch : ''
+
+    if (searchQuery.value !== nextQuery) {
+      searchQuery.value = nextQuery
+    }
+  },
+  {
+    immediate: true,
+  },
+)
+
 const selectedCityInfo = ref('카드를 클릭하거나 검색해 보세요.')
-const selectedCityId = ref(null)
+const selectedCityId = computed(() => {
+  const cityId = route.params.city
+
+  return typeof cityId === 'string' ? cityId : null
+})
 
 const selectedCity = computed(() => {
   if (!selectedCityId.value) {
@@ -52,6 +69,23 @@ const selectedCity = computed(() => {
     null
   )
 })
+
+// URL 통한 모달 진입 확인
+watch(
+  selectedCity,
+  (city) => {
+    if (!city) {
+      return
+    }
+
+    if (document.body.style.overflow !== 'hidden') {
+      prepareDetailTransition(city.id)
+    }
+  },
+  {
+    immediate: true,
+  },
+)
 
 // 실시간 검색 필터링
 const filteredCities = computed(() => {
@@ -70,13 +104,30 @@ const SearchUpdate = (val) => {
 }
 
 const DetailJump = (payload) => {
-  selectedCityId.value = typeof payload === 'string' ? payload : payload.id
+  const cityId = typeof payload === 'string' ? payload : payload.id
 
   prepareDetailTransition(payload)
-}
 
+  router.push({
+    name: 'WeatherCity',
+    params: {
+      city: cityId,
+    },
+    query: {
+      ...route.query,
+    },
+  })
+}
+//  #/weather/city_01?search=서울
+//  → 모달 닫기
+//  #/?search=서울
 const closeDetail = () => {
-  selectedCityId.value = null
+  router.replace({
+    name: 'WeatherHome',
+    query: {
+      ...route.query,
+    },
+  })
 }
 
 watch(searchQuery, (newQuery) => {
@@ -147,7 +198,23 @@ watchEffect(() => {
           </div>
 
           <div class="weather-gird">
-            <p v-if="isLoading" class="loading-text">실시간 기상 데이터를 수신 중입니다...</p>
+            <div
+              v-if="isLoading"
+              class="weather-loading-grid"
+              aria-label="실시간 기상 데이터를 불러오는 중입니다"
+            >
+              <div v-for="number in 4" :key="number" class="weather-loading-card glass-panel">
+                <ElSkeleton animated>
+                  <template #template>
+                    <ElSkeletonItem variant="text" class="weather-loading-card__name" />
+
+                    <ElSkeletonItem variant="text" class="weather-loading-card__temperature" />
+
+                    <ElSkeletonItem variant="text" class="weather-loading-card__status" />
+                  </template>
+                </ElSkeleton>
+              </div>
+            </div>
 
             <template v-else>
               <p v-if="errorMessage" class="error-text">일부 도시의 날씨를 불러오지 못했습니다.</p>
@@ -393,6 +460,49 @@ watchEffect(() => {
   border-radius: 50%;
 
   box-shadow: 0 0 12px var(--accent-blue);
+}
+
+.weather-loading-grid {
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+}
+
+.weather-loading-card {
+  min-height: 230px;
+  padding: 26px;
+
+  border-radius: 30px;
+}
+
+.weather-loading-card :deep(.el-skeleton__item) {
+  display: block;
+
+  background: linear-gradient(
+    90deg,
+    var(--glass-background),
+    var(--glass-background-strong),
+    var(--glass-background)
+  );
+}
+
+.weather-loading-card__name {
+  width: 42% !important;
+  height: 24px !important;
+  margin-bottom: 34px;
+}
+
+.weather-loading-card__temperature {
+  width: 58% !important;
+  height: 56px !important;
+  margin-bottom: 26px;
+}
+
+.weather-loading-card__status {
+  width: 30% !important;
+  height: 18px !important;
 }
 
 @media (max-width: 520px) {

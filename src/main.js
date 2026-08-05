@@ -3,7 +3,9 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
+import 'element-plus/dist/index.css'
 
+// CSS
 // 공통 색상 & 글라스 기반
 import './assets/styles/weather-app.css'
 

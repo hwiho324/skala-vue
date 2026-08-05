@@ -21,8 +21,20 @@ const route = useRoute()
       </RouterLink>
 
       <div class="app-actions">
-        <nav class="navigation" :class="{ 'is-about': route.path === '/about' }">
-          <RouterLink to="/" class="nav-link"> 날씨 홈 </RouterLink>
+        <nav
+          class="navigation"
+          :class="{
+            'is-about': route.path === '/about',
+            'is-no-selection': route.name === 'NotFound',
+          }"
+        >
+          <RouterLink
+            to="/"
+            class="nav-link"
+            :class="{ 'is-detail-active': route.name === 'WeatherCity' }"
+          >
+            날씨 홈
+          </RouterLink>
 
           <RouterLink to="/about" class="nav-link"> 서비스 소개 </RouterLink>
         </nav>
@@ -156,7 +168,13 @@ const route = useRoute()
   -webkit-backdrop-filter: blur(10px) saturate(140%);
 
   transform: translate(0, -50%);
-  transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition:
+    transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 180ms ease;
+}
+
+.navigation.is-no-selection::before {
+  opacity: 0;
 }
 
 /* 서비스 소개가 선택되면 오른쪽으로 이동 */
@@ -195,7 +213,8 @@ const route = useRoute()
   background: transparent;
 }
 
-.nav-link.router-link-exact-active {
+.nav-link.router-link-exact-active,
+.nav-link.is-detail-active {
   color: var(--text-primary);
   background: transparent;
   border: 0;
@@ -359,7 +378,8 @@ const route = useRoute()
 }
 
 /* 선택된 메뉴 */
-.app-header.is-dark .nav-link.router-link-exact-active {
+.app-header.is-dark .nav-link.router-link-exact-active,
+.app-header.is-dark .nav-link.is-detail-active {
   color: #acd8ea;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.48);
 }
