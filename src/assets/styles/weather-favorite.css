@@ -1,0 +1,226 @@
+/* ========================================
+   홈 화면과 우측 즐겨찾기 패널 배치
+======================================== */
+
+.weather-content-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  align-items: start;
+  gap: 24px;
+}
+
+.favorite-panel {
+  position: sticky;
+  top: 92px;
+  z-index: 10;
+  align-self: start;
+
+  width: 100%;
+  min-height: 220px;
+  margin: 0;
+  padding: 22px;
+
+  overflow: hidden;
+  border-radius: 30px;
+}
+
+.favorite-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.favorite-panel__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.favorite-panel__title svg {
+  color: #f2bd43;
+}
+
+.favorite-panel__title h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.favorite-panel__count {
+  display: grid;
+  place-items: center;
+
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+
+  color: #426983;
+  font-size: 0.82rem;
+  font-weight: 700;
+
+  background: rgba(255, 255, 255, 0.38);
+  border-radius: 999px;
+}
+
+.favorite-panel__actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.favorite-panel__clear {
+  display: grid;
+  place-items: center;
+
+  width: 28px;
+  height: 28px;
+  padding: 0;
+
+  color: rgba(38, 68, 92, 0.58);
+  font-size: 0.76rem;
+
+  background: rgba(255, 255, 255, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.52);
+  border-radius: 999px;
+  cursor: pointer;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 4px 10px rgba(71, 105, 130, 0.08);
+
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.favorite-panel__clear:hover {
+  color: #c95f67;
+  background: rgba(255, 255, 255, 0.42);
+  transform: scale(1.06);
+}
+
+.favorite-panel__clear:active {
+  transform: scale(0.92);
+}
+
+.favorite-panel__clear:focus-visible {
+  outline: 2px solid rgba(70, 125, 161, 0.65);
+  outline-offset: 2px;
+}
+
+.favorite-panel__empty {
+  margin: 42px 0;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  text-align: center;
+}
+
+.favorite-panel__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.favorite-panel__list li + li {
+  border-top: 1px solid rgba(255, 255, 255, 0.52);
+}
+
+.favorite-panel__city {
+  display: grid;
+  grid-template-columns: 28px minmax(60px, 1fr) auto auto;
+  align-items: center;
+  gap: 9px;
+
+  width: 100%;
+  padding: 15px 8px;
+
+  color: var(--text-primary);
+  text-align: left;
+
+  background: transparent;
+  border: 0;
+  border-radius: 15px;
+  cursor: pointer;
+
+  transition:
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.favorite-panel__city:hover {
+  background: rgba(255, 255, 255, 0.34);
+  transform: translateX(3px);
+}
+
+.favorite-panel__weather-icon {
+  display: grid;
+  place-items: center;
+  color: #4e7fa0;
+  font-size: 1.05rem;
+}
+
+.favorite-panel__name {
+  overflow: hidden;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.favorite-panel__current {
+  font-size: 1rem;
+}
+
+.favorite-panel__range {
+  display: flex;
+  gap: 5px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.favorite-panel__max {
+  color: #d96970;
+}
+
+.favorite-panel__min {
+  color: #4c82c2;
+}
+
+:root[data-theme='dark'] .favorite-panel__count,
+:root[data-theme='dark'] .favorite-panel__clear {
+  color: var(--text-secondary);
+  background: rgba(174, 210, 229, 0.1);
+  border-color: rgba(190, 220, 237, 0.16);
+}
+
+:root[data-theme='dark'] .favorite-panel__clear:hover {
+  color: #f2a2a6;
+  background: rgba(174, 210, 229, 0.16);
+}
+
+:root[data-theme='dark'] .favorite-panel__list li + li {
+  border-color: rgba(190, 220, 237, 0.13);
+}
+
+:root[data-theme='dark'] .favorite-panel__city:hover {
+  background: rgba(174, 210, 229, 0.1);
+}
+
+:root[data-theme='dark'] .favorite-panel__weather-icon {
+  color: #91bdd5;
+}
+
+@media (max-width: 1100px) {
+  .weather-content-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .favorite-panel {
+    top: 74px;
+  }
+
+  .favorite-panel {
+    width: 100%;
+    margin: 0;
+  }
+}

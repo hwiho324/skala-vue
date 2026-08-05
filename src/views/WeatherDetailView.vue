@@ -14,7 +14,11 @@ const configStore = useConfigStore()
 // 상세 주소 직접 접속: 해당 도시 한개만 API 요청
 // 상세 페이지 새로 고침: 해당 도시 한 개만 요청
 const cityData = computed(() => {
-  return weatherStore.cityList.find((city) => city.id === route.params.city) ?? null
+  return (
+    weatherStore.cityList.find((city) => city.id === route.params.city) ??
+    weatherStore.myLocateWeather.find((city) => city.id === route.params.city) ??
+    null
+  )
 })
 
 onMounted(() => {

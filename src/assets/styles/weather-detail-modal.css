@@ -1,0 +1,511 @@
+/* ========================================
+   날씨 상세 모달
+======================================== */
+
+.weather-detail-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+
+  padding: 24px;
+
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+
+  background: rgba(53, 80, 101, 0.28);
+
+  backdrop-filter: blur(15px) saturate(0.8);
+  -webkit-backdrop-filter: blur(15px) saturate(0.8);
+}
+
+.weather-detail-modal {
+  position: relative;
+
+  width: min(940px, 94vw);
+  margin: auto 0;
+  padding: 32px 32px 18px;
+
+  color: var(--text-primary);
+
+  background: linear-gradient(135deg, rgba(245, 251, 255, 0.76), rgba(198, 220, 234, 0.48));
+
+  border-radius: 34px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.94),
+    0 30px 80px rgba(43, 74, 96, 0.32);
+}
+
+.weather-detail-modal__close {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  z-index: 5;
+
+  display: grid;
+  place-items: center;
+
+  width: 40px;
+  height: 40px;
+  padding: 0;
+
+  color: #385b73;
+  font-size: 1.6rem;
+  line-height: 1;
+
+  cursor: pointer;
+
+  background: rgba(255, 255, 255, 0.42);
+
+  border: 1px solid rgba(255, 255, 255, 0.72);
+
+  border-radius: 50%;
+
+  transition:
+    scale 180ms ease,
+    background 180ms ease;
+}
+
+.weather-detail-modal__close:hover {
+  scale: 1.08;
+
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.weather-detail-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 28px;
+
+  padding-right: 44px;
+}
+
+.weather-detail-modal__label {
+  margin: 0 0 6px;
+
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 750;
+
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.weather-detail-modal__header h2 {
+  margin: 0;
+
+  font-size: clamp(1.6rem, 4vw, 2.5rem);
+  line-height: 1.25;
+}
+
+.weather-detail-modal__status {
+  margin: 10px 0 0;
+  color: var(--text-secondary);
+  font-weight: 650;
+}
+
+.weather-detail-modal__temperature {
+  margin: 0;
+
+  color: #315d79;
+  font-size: clamp(3rem, 9vw, 5.5rem);
+  font-weight: 500;
+  line-height: 1;
+
+  letter-spacing: -0.07em;
+}
+
+.weather-detail-modal__metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+
+  margin-top: 32px;
+}
+
+.weather-detail-modal__metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 18px 20px;
+
+  background: rgba(255, 255, 255, 0.32);
+
+  border: 1px solid rgba(255, 255, 255, 0.58);
+
+  border-radius: 20px;
+}
+
+.weather-detail-modal__metric span {
+  color: var(--text-secondary);
+}
+
+.weather-detail-modal__metric strong {
+  color: #315d79;
+  font-size: 1.15rem;
+}
+
+/* 기본 열기·닫기 애니메이션 */
+.weather-detail-enter-active .weather-detail-modal,
+.weather-detail-leave-active .weather-detail-modal {
+  transition:
+    transform 300ms cubic-bezier(0.2, 0.8, 0.25, 1),
+    opacity 260ms ease;
+}
+
+.weather-detail-enter-from .weather-detail-modal,
+.weather-detail-leave-to .weather-detail-modal {
+  opacity: 0;
+  transform: scale(0.72);
+}
+
+/* ========================================
+   최고·최저 기온
+======================================== */
+
+.weather-detail-modal__temperature-range {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.weather-detail-modal__temperature-range span {
+  padding: 6px 10px;
+
+  font-size: 0.78rem;
+  font-weight: 750;
+
+  background: rgba(255, 255, 255, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+}
+
+.weather-detail-modal__temperature-range .is-max {
+  color: #c65f67;
+}
+
+.weather-detail-modal__temperature-range .is-min {
+  color: #477db9;
+}
+
+/* ========================================
+   시간별 예보 영역
+======================================== */
+
+.weather-detail-modal__forecast {
+  margin-top: 24px;
+  padding: 22px;
+
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.56);
+  border-radius: 26px;
+}
+
+.weather-detail-modal__forecast-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.weather-detail-modal__forecast-heading p {
+  margin: 0 0 4px;
+
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.weather-detail-modal__forecast-heading h3 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.weather-detail-modal__forecast-heading > span {
+  padding: 6px 10px;
+
+  color: #4b7189;
+  font-size: 0.75rem;
+  font-weight: 700;
+
+  background: rgba(255, 255, 255, 0.38);
+  border-radius: 999px;
+}
+
+.weather-detail-modal__loading,
+.weather-detail-modal__forecast-error {
+  margin: 35px 0;
+  text-align: center;
+}
+
+.weather-detail-modal__forecast-error {
+  color: #b7545e;
+}
+
+/* ========================================
+   시간별 막대그래프
+======================================== */
+
+.weather-hourly-chart {
+  padding-bottom: 6px;
+  overflow-x: auto;
+}
+
+.weather-hourly-chart__items {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(72px, 1fr));
+  gap: 8px;
+
+  min-width: 680px;
+}
+
+.weather-hourly-chart__item {
+  display: grid;
+  grid-template-rows: auto 28px 145px auto auto;
+  justify-items: center;
+  gap: 7px;
+
+  padding: 10px 6px;
+
+  border: 1px solid transparent;
+  border-radius: 18px;
+}
+
+.weather-hourly-chart__item.is-current {
+  background: rgba(255, 237, 174, 0.3);
+  border-color: rgba(255, 212, 89, 0.5);
+}
+
+.weather-hourly-chart__time {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.weather-hourly-chart__item.is-current .weather-hourly-chart__time {
+  color: #a56a21;
+}
+
+.weather-hourly-chart__icon {
+  color: #527d98;
+  font-size: 1.05rem;
+}
+
+.weather-hourly-chart__item.is-current .weather-hourly-chart__icon {
+  color: #e4a637;
+}
+
+.weather-hourly-chart__bar-area {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  width: 100%;
+  height: 145px;
+}
+
+.weather-hourly-chart__bar {
+  width: min(34px, 65%);
+  height: var(--bar-height);
+
+  background: linear-gradient(to top, rgba(77, 137, 177, 0.84), rgba(151, 205, 232, 0.66));
+
+  border: 1px solid rgba(255, 255, 255, 0.52);
+  border-radius: 12px 12px 7px 7px;
+
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.62),
+    0 8px 18px rgba(56, 104, 136, 0.15);
+
+  transition: height 450ms ease;
+}
+
+.weather-hourly-chart__item.is-current .weather-hourly-chart__bar {
+  background: linear-gradient(to top, #e7a943, #ffe29a);
+
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.75),
+    0 8px 22px rgba(221, 155, 48, 0.28);
+}
+
+.weather-hourly-chart__temperature {
+  color: #315d79;
+  font-size: 0.88rem;
+}
+
+.weather-hourly-chart__pop {
+  color: var(--text-secondary);
+  font-size: 0.68rem;
+}
+
+.weather-detail-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin: 10px 4px 0;
+  min-height: 24px;
+}
+
+.weather-detail-modal__source {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.weather-detail-modal__source svg {
+  color: var(--accent-blue);
+  font-size: 0.78rem;
+}
+
+.weather-detail-modal__updated {
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ========================================
+   상세 모달 다크모드
+======================================== */
+
+:root[data-theme='dark'] .weather-detail-backdrop {
+  background: rgba(2, 9, 16, 0.62);
+
+  backdrop-filter: blur(16px) saturate(0.72);
+  -webkit-backdrop-filter: blur(16px) saturate(0.72);
+}
+
+:root[data-theme='dark'] .weather-detail-modal {
+  background: linear-gradient(135deg, rgba(30, 55, 73, 0.94), rgba(10, 27, 40, 0.9));
+
+  border: 1px solid rgba(190, 220, 237, 0.2);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.13),
+    0 30px 85px rgba(0, 5, 10, 0.62);
+}
+
+:root[data-theme='dark'] .weather-detail-modal__close {
+  color: #dcecf3;
+  background: rgba(173, 209, 228, 0.1);
+  border-color: rgba(202, 226, 239, 0.2);
+}
+
+:root[data-theme='dark'] .weather-detail-modal__close:hover {
+  background: rgba(173, 209, 228, 0.2);
+}
+
+:root[data-theme='dark'] .weather-detail-modal__temperature,
+:root[data-theme='dark'] .weather-detail-modal__metric strong,
+:root[data-theme='dark'] .weather-hourly-chart__temperature {
+  color: #b9daeb;
+}
+
+:root[data-theme='dark'] .weather-detail-modal__metric,
+:root[data-theme='dark'] .weather-detail-modal__temperature-range span,
+:root[data-theme='dark'] .weather-detail-modal__forecast {
+  background: rgba(166, 204, 225, 0.08);
+  border-color: rgba(195, 222, 237, 0.16);
+}
+
+:root[data-theme='dark'] .weather-detail-modal__forecast-heading > span {
+  color: #b5d5e5;
+  background: rgba(166, 204, 225, 0.1);
+}
+
+:root[data-theme='dark'] .weather-detail-modal__temperature-range .is-max {
+  color: #f0a0a4;
+}
+
+:root[data-theme='dark'] .weather-detail-modal__temperature-range .is-min {
+  color: #91c1e4;
+}
+
+:root[data-theme='dark'] .weather-hourly-chart__item.is-current {
+  background: rgba(231, 177, 74, 0.12);
+  border-color: rgba(242, 190, 87, 0.32);
+}
+
+:root[data-theme='dark'] .weather-hourly-chart__item.is-current .weather-hourly-chart__time {
+  color: #f1c26c;
+}
+
+:root[data-theme='dark'] .weather-hourly-chart__icon {
+  color: #91bdd5;
+}
+
+:root[data-theme='dark'] .weather-hourly-chart__bar {
+  background: linear-gradient(to top, rgba(73, 137, 177, 0.92), rgba(137, 190, 219, 0.7));
+
+  border-color: rgba(194, 222, 237, 0.22);
+
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.18),
+    0 8px 20px rgba(1, 8, 14, 0.28);
+}
+
+:root[data-theme='dark'] .weather-hourly-chart__item.is-current .weather-hourly-chart__bar {
+  background: linear-gradient(to top, #c98531, #f1cb74);
+
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.25),
+    0 8px 22px rgba(207, 139, 43, 0.25);
+}
+
+:root[data-theme='dark'] .weather-hourly-chart {
+  scrollbar-color: rgba(151, 194, 218, 0.36) transparent;
+}
+
+:root[data-theme='dark'] .weather-detail-modal__forecast-error {
+  color: #f0a0a4;
+}
+
+@media (max-width: 600px) {
+  .weather-detail-modal {
+    padding: 26px 20px 16px;
+  }
+
+  .weather-detail-modal__header {
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .weather-detail-modal__footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 9px;
+  }
+
+  .weather-detail-modal__updated {
+    text-align: left;
+  }
+
+  .weather-detail-modal__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .weather-detail-modal__metric {
+    padding: 14px;
+  }
+
+  .weather-detail-modal__metric {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
