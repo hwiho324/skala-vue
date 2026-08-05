@@ -7,7 +7,7 @@ export const useWeatherStore = defineStore('weather', () => {
   const isLoading = ref(false)
   const errorMessage = ref(false)
 
-  const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY || '81dc079eb0ed0028123885f783beab16'
+  const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY
   const API_URL = 'https://api.openweathermap.org/data/2.5/weather'
   const FORECAST_API_URL = 'https://api.openweathermap.org/data/2.5/forecast'
 
