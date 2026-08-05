@@ -16,11 +16,26 @@
   --sky-cloud: #edf5f8;
   --sky-cream: #f7f3ea;
 
-  --glass-background: rgba(255, 255, 255, 0.24);
-  --glass-background-strong: rgba(255, 255, 255, 0.38);
-  --glass-border: rgba(255, 255, 255, 0.58);
-  --glass-highlight: rgba(255, 255, 255, 0.88);
-  --glass-shadow: rgba(71, 105, 130, 0.2);
+  /* 일반 대시보드 글라스 */
+  --glass-background: rgba(228, 242, 250, 0.68);
+  --glass-background-strong: rgba(246, 251, 254, 0.84);
+  --glass-border: rgba(255, 255, 255, 0.82);
+  --glass-highlight: rgba(255, 255, 255, 0.94);
+  --glass-shadow: rgba(62, 96, 121, 0.24);
+
+  /* 상단 Weather Dashboard 헤더 */
+  --header-glass-background: rgba(237, 247, 251, 0.86);
+
+  /* 상세 모달 */
+  --detail-backdrop-background: rgba(42, 63, 79, 0.58);
+  --detail-modal-start: rgba(246, 251, 254, 0.98);
+  --detail-modal-end: rgba(198, 221, 235, 0.94);
+
+  --text-primary: #26445c;
+  --text-secondary: rgba(38, 68, 92, 0.7);
+
+  --accent-blue: #5b91b5;
+  --accent-red: #db7e82;
 
   --text-primary: #26445c;
   --text-secondary: rgba(38, 68, 92, 0.7);
@@ -32,20 +47,26 @@
 :root[data-theme='dark'] {
   color-scheme: dark;
 
-  /* 어두운 데님 하늘 */
   --sky-denim: #243f55;
   --sky-denim-light: #38556b;
   --sky-cloud: #173044;
   --sky-cream: #29475d;
 
-  /* 다크 글라스 */
-  --glass-background: rgba(13, 31, 45, 0.46);
-  --glass-background-strong: rgba(28, 52, 70, 0.58);
-  --glass-border: rgba(190, 220, 237, 0.2);
-  --glass-highlight: rgba(255, 255, 255, 0.16);
-  --glass-shadow: rgba(2, 9, 16, 0.48);
+  /* 일반 대시보드 글라스 */
+  --glass-background: rgba(7, 23, 35, 0.76);
+  --glass-background-strong: rgba(23, 48, 66, 0.88);
+  --glass-border: rgba(190, 220, 237, 0.28);
+  --glass-highlight: rgba(255, 255, 255, 0.2);
+  --glass-shadow: rgba(1, 6, 11, 0.58);
 
-  /* 글자 */
+  /* 상단 Weather Dashboard 헤더 */
+  --header-glass-background: rgba(5, 18, 28, 0.94);
+
+  /* 상세 모달 */
+  --detail-backdrop-background: rgba(1, 7, 12, 0.8);
+  --detail-modal-start: rgba(26, 50, 68, 0.98);
+  --detail-modal-end: rgba(7, 22, 34, 0.96);
+
   --text-primary: #e7f1f6;
   --text-secondary: rgba(220, 235, 244, 0.68);
 
@@ -153,8 +174,8 @@ button,
     inset 0 -1px 0 rgba(255, 255, 255, 0.08),
     0 18px 45px var(--glass-shadow);
 
-  backdrop-filter: blur(22px) saturate(155%);
-  -webkit-backdrop-filter: blur(22px) saturate(155%);
+  backdrop-filter: blur(26px) saturate(135%);
+  -webkit-backdrop-filter: blur(26px) saturate(135%);
 }
 
 /* 유리 위쪽에 비치는 광택 */

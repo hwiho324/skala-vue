@@ -63,8 +63,8 @@ export const useDetailTransition = () => {
 
     panel.style.transformOrigin = start.transformOrigin
 
-    const backdropAnimation = element.animate([{ opacity: 0 }, { opacity: 1 }], {
-      duration: 300,
+    const backdropAnimation = element.animate([{ opacity: 0.55 }, { opacity: 1 }], {
+      duration: 240,
       easing: 'ease-out',
       fill: 'both',
     })

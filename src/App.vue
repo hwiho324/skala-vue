@@ -79,7 +79,7 @@ const route = useRoute()
   align-items: center;
   justify-content: space-between;
 
-  background: rgba(237, 245, 248, 0.42);
+  background: var(--header-glass-background);
   border: 1px solid rgba(255, 255, 255, 0.72);
   border-radius: 22px;
 
@@ -87,8 +87,8 @@ const route = useRoute()
     0 14px 35px rgba(71, 105, 130, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.82);
 
-  backdrop-filter: blur(22px) saturate(140%);
-  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  backdrop-filter: blur(26px) saturate(130%);
+  -webkit-backdrop-filter: blur(26px) saturate(130%);
 }
 
 .app-title {
@@ -338,7 +338,7 @@ const route = useRoute()
 ======================================= */
 
 .app-header.is-dark {
-  background: rgba(7, 21, 32, 0.86);
+  background: var(--header-glass-background);
   border-color: rgba(185, 218, 236, 0.22);
 
   box-shadow:
