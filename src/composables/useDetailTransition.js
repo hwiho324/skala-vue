@@ -72,7 +72,7 @@ export const useDetailTransition = () => {
     const panelAnimation = panel.animate(
       [
         {
-          opacity: 0.55,
+          opacity: 0.96,
           transform: start.transform,
           borderRadius: '28px',
         },
@@ -120,7 +120,7 @@ export const useDetailTransition = () => {
           borderRadius: '34px',
         },
         {
-          opacity: 0.45,
+          opacity: 0.92,
           transform: end.transform,
           borderRadius: '28px',
         },

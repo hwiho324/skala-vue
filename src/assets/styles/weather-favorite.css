@@ -22,6 +22,11 @@
 
   overflow: hidden;
   border-radius: 30px;
+
+  background: var(--floating-glass-background);
+
+  backdrop-filter: blur(30px) saturate(120%);
+  -webkit-backdrop-filter: blur(30px) saturate(120%);
 }
 
 .favorite-panel__header {

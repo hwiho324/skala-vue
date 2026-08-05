@@ -87,8 +87,8 @@ const route = useRoute()
     0 14px 35px rgba(71, 105, 130, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.82);
 
-  backdrop-filter: blur(26px) saturate(130%);
-  -webkit-backdrop-filter: blur(26px) saturate(130%);
+  backdrop-filter: blur(30px) saturate(1320%);
+  -webkit-backdrop-filter: blur(30px) saturate(130%);
 }
 
 .app-title {
